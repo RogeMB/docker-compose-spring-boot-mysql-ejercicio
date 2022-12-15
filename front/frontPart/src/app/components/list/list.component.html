@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div>
+        <ul *ngFor="let item of listado">
+            <li>{{item.description}}</li>
+        </ul>
+    </div>
+
+    <form class="d-inline-block ms-2">
+        <div class="form-floating mb-3">
+            <input [(ngModel)]="tutorial.title" name="title" class="text-primary" type="text" class="form-control" id="floatingInput" placeholder="Leave a title here">
+            <label class="text-primary" for="floatingInput">Title</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input [(ngModel)]="tutorial.description" name="description" class="text-primary" type="text" class="form-control" id="floatingInput2" placeholder="Leave a description here">
+            <label class="text-primary" for="floatingInput2">Description</label>
+        </div>
+    </form>
+
+    <div class="mb-2 ms-2 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Published</label>
+    </div>
+
+    <button (click)="createTutorial()" class="ms-2" type="submit" class="btn btn-primary">Submit</button>
+</div>
