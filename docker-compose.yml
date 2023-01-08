@@ -12,6 +12,9 @@ services:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     volumes:
       - db:/var/lib/mysql
+    networks: 
+      - backend
+
   app:
     depends_on:
       - mysqldb
@@ -26,12 +29,35 @@ services:
         "spring.datasource.username" : "$MYSQLDB_USER",
         "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
         "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update"
-      }'
+        "spring.jpa.hibernate.ddl-auto" : "update"}'
     volumes:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
+    networks:
+      - backend
+      - frontend
+    
+  angular-ui:
+    depends_on:
+      - app
+    
+    build:
+      context: ./frontPart
+      args:
+        - ANGULAR_APP_API_BASE_URL=$CLIENT_API_BASE_URL
+    ports:
+      - $ANGULAR_LOCAL_PORT:$ANGULAR_DOCKER_PORT
 
+    restart: on-failure
+    stdin_open: true
+    tty: true 
+    networks:
+      - frontend 
+  
 volumes:
   db:
+
+networks:
+  backend:
+  frontend:
